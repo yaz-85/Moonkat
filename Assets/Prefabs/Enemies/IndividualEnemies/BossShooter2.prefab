@@ -44,21 +44,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f75388997f8d4264a86b7441dc9ea74e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 4641165794769155162, guid: 5089b9cd653abda4ba6013a20e42c774, type: 3}
+  projectilePrefab: {fileID: 4641165794769155162, guid: 19ca1195e585ca348bb386c98ddbab9a, type: 3}
   projectileHolder: {fileID: 0}
   isPlayerControlled: 0
   fireAction:
-    m_Name: 
+    m_Name: Fire
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 8aa8de87-cf41-4460-ba77-a27da211cdff
+    m_Id: 35d9ec8b-4665-45c4-b22a-41a88bb7528d
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  fireRate: 3
-  projectileSpread: 1
-  fireEffect: {fileID: 0}
+  fireRate: 0.5
+  projectileSpread: 20
+  fireEffect: {fileID: 8282131552140209221}
 --- !u!1 &8282131552441171991
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 4327850106528714602}
   - component: {fileID: 584683058982610388}
   m_Layer: 9
-  m_Name: DiagonalShooter
+  m_Name: BossShooter2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,8 +91,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.7095091, y: 1.1499779, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 4.5, y: 4.5, z: 4.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8282131553695226667}
   - {fileID: 8282131552140209219}
@@ -183,15 +183,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86999d6afe103ad4c881a51052cc6b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  scoreValue: 5
+  moveSpeed: 0.5
+  scoreValue: 30
   followTarget: {fileID: 0}
   followRange: 30
   guns:
   - {fileID: 8282131553695226666}
   - {fileID: 8282131552140209218}
   shootMode: 1
-  movementMode: 2
+  movementMode: 1
   scrollDirection: {x: 1, y: 0, z: 0}
 --- !u!114 &8022954021460962557
 MonoBehaviour:
@@ -206,15 +206,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 1
-  defaultHealth: 2
-  maximumHealth: 2
-  currentHealth: 2
+  defaultHealth: 125
+  maximumHealth: 200
+  currentHealth: 200
   invincibilityTime: 0
   isAlwaysInvincible: 0
   useLives: 0
   currentLives: 3
   maximumLives: 5
   respawnOnDeath: 1
+  useKeyPressDamageOnly: 1
+  damageKey: 107
+  keyPressDamageAmount: 25
+  keyPressDamageEffect: {fileID: 2452382815751308013, guid: 990f3751046a4d840806774f23579fe2, type: 3}
   deathEffect: {fileID: 2452382815751308013, guid: 990f3751046a4d840806774f23579fe2, type: 3}
   hitEffect: {fileID: 6229913163069739088, guid: d6029318d740811488fd5dd38a7e1ce1, type: 3}
 --- !u!50 &4327850106528714602
@@ -342,18 +346,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f75388997f8d4264a86b7441dc9ea74e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 4641165794769155162, guid: 5089b9cd653abda4ba6013a20e42c774, type: 3}
+  projectilePrefab: {fileID: 4641165794769155162, guid: 19ca1195e585ca348bb386c98ddbab9a, type: 3}
   projectileHolder: {fileID: 0}
   isPlayerControlled: 0
   fireAction:
-    m_Name: 
+    m_Name: Fire
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 9ff905b9-38e9-49b9-ad61-60a48ecca300
+    m_Id: c81a51fe-6b0f-41e2-833f-c33eeb18ed9e
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  fireRate: 3
-  projectileSpread: 1
-  fireEffect: {fileID: 0}
+  fireRate: 0.5
+  projectileSpread: 20
+  fireEffect: {fileID: 8282131553695226669}

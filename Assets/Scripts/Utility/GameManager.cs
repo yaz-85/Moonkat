@@ -49,6 +49,14 @@ public class GameManager : MonoBehaviour
     // The number of enemies defeated in game
     private int enemiesDefeated = 0;
 
+    /// <summary>
+    /// Public property to access the number of enemies defeated
+    /// </summary>
+    public int EnemiesDefeated
+    {
+        get { return enemiesDefeated; }
+    }
+
     [Tooltip("Whether or not to print debug statements about whether the game can be won or not according to the game manager's" +
         " search at start up")]
     public bool printDebugOfWinnableStatus = true;

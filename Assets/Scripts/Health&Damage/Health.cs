@@ -33,6 +33,25 @@ public class Health : MonoBehaviour
     public int currentLives = 3;
     [Tooltip("The maximum number of lives this health can have")]
     public int maximumLives = 5;
+    [Tooltip("If true, respawn at the respawn point when death occurs with lives remaining. If false, just lose a life without moving")]
+    public bool respawnOnDeath = true;
+
+    [Header("Key Press Damage Settings")]
+    [Tooltip("If enabled, this entity only takes damage from a specific key press and is immune to projectile damage")]
+    public bool useKeyPressDamageOnly = false;
+
+    [Tooltip("The key that the player must press to damage this entity")]
+    public KeyCode damageKey = KeyCode.K;
+
+    [Tooltip("How much damage each key press deals")]
+    [Min(1)]
+    public int keyPressDamageAmount = 1;
+
+    [Tooltip("Damage effect to show when key press damage is applied")]
+    public GameObject keyPressDamageEffect = null;
+
+    // Whether this object can currently listen for key presses
+    private bool canReceiveKeyPressDamage = true;
 
     /// <summary>
     /// Description:
@@ -58,6 +77,7 @@ public class Health : MonoBehaviour
     void Update()
     {
         InvincibilityCheck();
+        CheckKeyPressDamage();
     }
 
     // The specific game time when the health can be damged again
@@ -123,6 +143,12 @@ public class Health : MonoBehaviour
     /// <param name="damageAmount">The amount of damage to take</param>
     public void TakeDamage(int damageAmount)
     {
+        // If this entity only takes damage from key presses, ignore projectile damage
+        if (useKeyPressDamageOnly)
+        {
+            return;
+        }
+
         if (isInvincableFromDamage || isAlwaysInvincible)
         {
             return;
@@ -224,7 +250,16 @@ public class Health : MonoBehaviour
         currentLives -= 1;
         if (currentLives > 0)
         {
-            Respawn();
+            // Only respawn if the respawnOnDeath flag is enabled
+            if (respawnOnDeath)
+            {
+                Respawn();
+            }
+            else
+            {
+                // Just reset health without moving
+                currentHealth = defaultHealth;
+            }
         }
         else
         {
@@ -263,5 +298,94 @@ public class Health : MonoBehaviour
             gameObject.GetComponent<Enemy>().DoBeforeDestroy();
         }
         Destroy(this.gameObject);
+    }
+
+    /// <summary>
+    /// Description:
+    /// Checks if the damage key has been pressed and applies key press damage
+    /// Inputs:
+    /// none
+    /// Returns:
+    /// void (no return)
+    /// </summary>
+    private void CheckKeyPressDamage()
+    {
+        // Only check for key presses if this entity uses key press damage mode
+        if (!useKeyPressDamageOnly || !canReceiveKeyPressDamage)
+        {
+            return;
+        }
+
+        // Check if the damage key was pressed
+        if (Input.GetKeyDown(damageKey))
+        {
+            ApplyKeyPressDamage();
+        }
+    }
+
+    /// <summary>
+    /// Description:
+    /// Applies damage from a key press
+    /// Inputs:
+    /// none
+    /// Returns:
+    /// void (no return)
+    /// </summary>
+    private void ApplyKeyPressDamage()
+    {
+        // Apply invincibility frames
+        if (isAlwaysInvincible)
+        {
+            return;
+        }
+
+        // Apply damage
+        currentHealth -= keyPressDamageAmount;
+
+        // Apply invincibility frames
+        timeToBecomeDamagableAgain = Time.time + invincibilityTime;
+        isInvincableFromDamage = true;
+
+        // Show effect for key press damage
+        if (keyPressDamageEffect != null)
+        {
+            Instantiate(keyPressDamageEffect, transform.position, transform.rotation, null);
+        }
+        else if (hitEffect != null)
+        {
+            // Fallback to regular hit effect if key press effect not assigned
+            Instantiate(hitEffect, transform.position, transform.rotation, null);
+        }
+
+        // Check if dead
+        CheckDeath();
+    }
+
+    /// <summary>
+    /// Description:
+    /// Gets whether this entity is in key-press-damage-only mode
+    /// Inputs:
+    /// none
+    /// Returns:
+    /// bool
+    /// </summary>
+    /// <returns>Whether this entity only takes key press damage</returns>
+    public bool IsKeyPressDamageOnly()
+    {
+        return useKeyPressDamageOnly;
+    }
+
+    /// <summary>
+    /// Description:
+    /// Sets whether this entity can receive key press damage (useful for disabling during cutscenes)
+    /// Inputs:
+    /// bool canReceive
+    /// Returns:
+    /// void (no return)
+    /// </summary>
+    /// <param name="canReceive">Whether to allow key press damage</param>
+    public void SetCanReceiveKeyPressDamage(bool canReceive)
+    {
+        canReceiveKeyPressDamage = canReceive;
     }
 }

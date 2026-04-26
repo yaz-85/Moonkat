@@ -33,8 +33,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -210,11 +210,12 @@ MonoBehaviour:
   defaultHealth: 1
   maximumHealth: 1
   currentHealth: 1
-  invincibilityTime: 3
+  invincibilityTime: 1.5
   isAlwaysInvincible: 0
   useLives: 1
   currentLives: 3
   maximumLives: 5
+  respawnOnDeath: 0
   deathEffect: {fileID: 6218169049356006189, guid: 68794701c80057447857bb433e54c579, type: 3}
   hitEffect: {fileID: 5156419567158778961, guid: d35295653acdbe24081a5caee3d9c353, type: 3}
 --- !u!50 &8825638267457894930
@@ -328,6 +329,6 @@ MonoBehaviour:
       m_Action: Fire
       m_Flags: 0
     m_Flags: 0
-  fireRate: 0.05
+  fireRate: 0.1
   projectileSpread: 1
   fireEffect: {fileID: 7104669494925799963, guid: 76d2a57037816cc4b8c3be55e2afd89e, type: 3}

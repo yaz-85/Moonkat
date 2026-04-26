@@ -37,6 +37,22 @@ public class CameraController : MonoBehaviour
     [Tooltip("The z coordinate to use for the camera position")]
     public float cameraZCoordinate = -10.0f;
 
+    [Header("Camera Boundaries")]
+    [Tooltip("Enable camera boundary constraints to prevent showing beyond level bounds")]
+    public bool enableBoundaryConstraints = true;
+
+    [Tooltip("The minimum X position the camera center can reach")]
+    public float boundaryMinX = -10.0f;
+
+    [Tooltip("The maximum X position the camera center can reach")]
+    public float boundaryMaxX = 10.0f;
+
+    [Tooltip("The minimum Y position the camera center can reach")]
+    public float boundaryMinY = -10.0f;
+
+    [Tooltip("The maximum Y position the camera center can reach")]
+    public float boundaryMaxY = 10.0f;
+
     [Header("Input Actions & Controls")]
     [Tooltip("The input action(s) that map to where the camera looks")]
     public InputAction lookAction;
@@ -97,6 +113,12 @@ public class CameraController : MonoBehaviour
             Vector3 targetPosition = GetTargetPosition();
             Vector3 mousePosition = GetPlayerMousePosition();
             Vector3 desiredCameraPosition = ComputeCameraPosition(targetPosition, mousePosition);
+
+            // Apply boundary constraints if enabled
+            if (enableBoundaryConstraints)
+            {
+                desiredCameraPosition = ClampCameraPosition(desiredCameraPosition);
+            }
 
             transform.position = desiredCameraPosition;
         }      
@@ -169,5 +191,34 @@ public class CameraController : MonoBehaviour
         }
         result.z = cameraZCoordinate;
         return result;
+    }
+
+    /// <summary>
+    /// Description:
+    /// Clamps the camera position within the defined boundaries to prevent showing beyond screen bounds
+    /// Inputs: 
+    /// Vector3 desiredPosition
+    /// Returns: 
+    /// Vector3
+    /// </summary>
+    /// <param name="desiredPosition">The desired camera position before clamping</param>
+    /// <returns>Vector3: The clamped camera position within boundaries</returns>
+    public Vector3 ClampCameraPosition(Vector3 desiredPosition)
+    {
+        // Get the camera's orthographic size to calculate the half-height and half-width visible
+        float cameraHeight = playerCamera.orthographicSize;
+        float cameraWidth = cameraHeight * playerCamera.aspect;
+
+        // Clamp X position
+        float minCameraX = boundaryMinX + cameraWidth;
+        float maxCameraX = boundaryMaxX - cameraWidth;
+        desiredPosition.x = Mathf.Clamp(desiredPosition.x, minCameraX, maxCameraX);
+
+        // Clamp Y position
+        float minCameraY = boundaryMinY + cameraHeight;
+        float maxCameraY = boundaryMaxY - cameraHeight;
+        desiredPosition.y = Mathf.Clamp(desiredPosition.y, minCameraY, maxCameraY);
+
+        return desiredPosition;
     }
 }
